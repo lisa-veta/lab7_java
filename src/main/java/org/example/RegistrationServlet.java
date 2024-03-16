@@ -18,6 +18,12 @@ public class RegistrationServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String login = (String)req.getSession().getAttribute("login");
+        String password = (String)req.getSession().getAttribute("password");
+        if (login != null && password != null) {
+            resp.sendRedirect("/list-files");
+            return;
+        }
         req.getRequestDispatcher("registration.jsp").forward(req, resp);
     }
 

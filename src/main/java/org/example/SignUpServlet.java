@@ -19,6 +19,12 @@ import accounts.AccountService;
 public class SignUpServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String login = (String)req.getSession().getAttribute("login");
+        String password = (String)req.getSession().getAttribute("password");
+        if (login != null && password != null) {
+            resp.sendRedirect("/list-files");
+            return;
+        }
         req.getRequestDispatcher("signuppage.jsp").forward(req, resp);
     }
 
@@ -26,12 +32,15 @@ public class SignUpServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String login = req.getParameter("login");
         String password = req.getParameter("password");
+
         UserProfile userProfile = AccountService.getUserByLogin(login);
 
         String session = req.getSession().getId();
         AccountService.addNewSession(session, userProfile);
 
         if(userProfile != null && Objects.equals(userProfile.getPass(), password)){
+            req.getSession().setAttribute("login", login);
+            req.getSession().setAttribute("password", password);
             resp.sendRedirect("list-files?path=D:/filemanager/"+login);
         }
         else{

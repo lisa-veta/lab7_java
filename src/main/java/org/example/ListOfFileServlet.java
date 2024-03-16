@@ -14,16 +14,15 @@ import java.io.IOException;
 public class ListOfFileServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String session = req.getSession().getId();
-        UserProfile profile = AccountService.getUserBySession(session);
-        if (profile == null) {
+        String login = (String)req.getSession().getAttribute("login");
+        String password = (String)req.getSession().getAttribute("password");
+        if (login == null || password == null) {
             resp.sendRedirect("/sign-up");
             return;
         }
-
         String directoryPath = req.getParameter("path");
-        if (directoryPath.equals("D:\\filemanager")) {
-            directoryPath = "D:\\filemanager\\"+ profile.getLogin();
+        if (directoryPath == null || directoryPath.equals("D:\\filemanager")) {
+            directoryPath = "D:\\filemanager\\"+ login;
         }
         File folder = new File(directoryPath);
         File[] files = folder.listFiles(File::isFile);
@@ -31,7 +30,7 @@ public class ListOfFileServlet extends HttpServlet {
         req.setAttribute("files", files);
         req.setAttribute("folders", folders);
         req.setAttribute("currentPath", directoryPath);
-        if (directoryPath.equals("D:\\filemanager\\" + profile.getLogin())) {
+        if (directoryPath.equals("D:\\filemanager\\" + login)) {
             req.setAttribute("previousPath", directoryPath);
         }
         else{
@@ -42,15 +41,9 @@ public class ListOfFileServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String session = req.getSession().getId();
-        UserProfile profile = AccountService.getUserBySession(session);
-        if (profile == null) {
-            resp.setContentType("text/html;charset=utf-8");
-            resp.getWriter().println("<h1 style='color: red;'>" +
-                    "Ошибка, <a href='javascript:history.go(-1)'>назад </h1>");
-            return;
-        }
-        AccountService.deleteSession(session);
+        req.getSession().removeAttribute("login");
+        req.getSession().removeAttribute("password");
+        req.getSession().removeAttribute("email");
         resp.sendRedirect("/sign-up");
     }
 }
