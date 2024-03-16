@@ -12,11 +12,14 @@
     if(path == null){
         path = "D:/";
     }
-    String previousPath = (new File(path)).getParent();
+    //String previousPath = (new File(path)).getParent();
+    String previousPath = (String)request.getAttribute("previousPath");
 %>
 
 <head>
     <title>First JSP</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <style>
         img{
             height: 20px;
@@ -27,10 +30,18 @@
 <body>
 <%=LocalDateTime.now()
 %>
+<div class="container-fluid d-flex justify-content-end align-items-end" style="position: relative;">
+    <form style="width: 30%;" method="post" action="/list-files">
+        <div class="text-center position-absolute top-0 end-0" style="margin-top: 10px; margin-right: 10px;">
+            <button type="submit" class="btn btn-primary mb-2">EXIT</button>
+        </div>
+    </form>
+</div>
+
 <h1>Список файлов в папке</h1>
 <h2><%=path%></h2>
 <% if (previousPath != null) { %>
-<a href="?path=<%=java.net.URLEncoder.encode(previousPath, "UTF-8")%>">Вернуться на уровень выше: <%=previousPath%></a>
+<a href="?path=<%=java.net.URLEncoder.encode(previousPath, "UTF-8")%>">Вернуться на уровень выше</a>
 <% } %>
 <hr/>
 <table>
@@ -63,6 +74,8 @@
         <td><%= new Date(folder.lastModified())%></td>
     </tr>
     <% } %>
+
+
 </table>
 </body>
 </html>
