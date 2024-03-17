@@ -8,11 +8,10 @@
 <%
     File[] files = (File[]) request.getAttribute("files");
     File[] folders = (File[]) request.getAttribute("folders");
-    String path = request.getParameter("path");
+    String path = (String)request.getAttribute("currentPath");
     if(path == null){
-        path = "D:/";
+        path = "D:/filemanager/";
     }
-    //String previousPath = (new File(path)).getParent();
     String previousPath = (String)request.getAttribute("previousPath");
 %>
 
@@ -74,7 +73,6 @@
         <td><%= new Date(folder.lastModified())%></td>
     </tr>
     <% } %>
-
 
 </table>
 </body>

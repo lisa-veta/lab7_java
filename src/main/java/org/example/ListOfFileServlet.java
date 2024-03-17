@@ -1,8 +1,5 @@
 package org.example;
 
-import accounts.AccountService;
-import accounts.UserProfile;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -43,7 +40,6 @@ public class ListOfFileServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.getSession().removeAttribute("login");
         req.getSession().removeAttribute("password");
-        req.getSession().removeAttribute("email");
         resp.sendRedirect("/sign-up");
     }
 }

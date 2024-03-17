@@ -17,7 +17,6 @@ public class AccountService {
     }
 
     public static void addNewUser(UserProfile userProfile){
-
         loginToProfile.put(userProfile.getLogin(), userProfile);
     }
     public static void addNewSession(String idSession, UserProfile userProfile){

@@ -19,13 +19,13 @@
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Login</label>
             <div class="col-sm-10">
-                <input class="form-control" id="login" name="login" type="text" placeholder="Login">
+                <input class="form-control" id="login" autocomplete="off" name="login" type="text" required placeholder="Login">
             </div>
         </div>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Password</label>
             <div class="col-sm-10">
-                <input type="password" class="form-control border" id="password" name="password" placeholder="Password">
+                <input type="password" class="form-control border" id="password" autocomplete="off" name="password" required placeholder="Password">
             </div>
         </div>
         <div class="text-center">

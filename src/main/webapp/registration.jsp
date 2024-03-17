@@ -15,27 +15,28 @@
 <body>
 <div class="container-fluid d-flex justify-content-center align-items-center" style="height: 100vh;">
     <form style="width: 30%;" method="post" action="/registration">
-        <h2 class="text-center mb-4">Sign up</h2>
+        <h2 class="text-center mb-4">Registration</h2>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Login</label>
             <div class="col-sm-10">
-                <input class="form-control" id="login" name="login" type="text" placeholder="Login">
+                <input class="form-control" id="login"  autocomplete="off" name="login" type="text" required placeholder="Login">
             </div>
         </div>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Email</label>
             <div class="col-sm-10">
-                <input class="form-control" id="email" name="email" type="text" placeholder="Email">
+                <input class="form-control" id="email" autocomplete="off" name="email" type="text" required placeholder="Email">
             </div>
         </div>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Password</label>
             <div class="col-sm-10">
-                <input type="password" class="form-control border" id="password" name="password" placeholder="Password">
+                <input type="password" class="form-control border" id="password" autocomplete="off" name="password" required placeholder="Password">
             </div>
         </div>
         <div class="text-center">
             <button type="submit" class="btn btn-primary mb-2">CREATE</button>
+            <p class="mt-3"><a href="/sign-up">Back</a></p>
         </div>
     </form>
 </div>
