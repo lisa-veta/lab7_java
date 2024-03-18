@@ -1,5 +1,8 @@
 package org.example;
 
+import accounts.AccountService;
+import accounts.UserProfile;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -7,8 +10,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
+
 @WebServlet(urlPatterns = {"/list-files"})
 public class ListOfFileServlet extends HttpServlet {
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String login = (String)req.getSession().getAttribute("login");
@@ -20,6 +26,9 @@ public class ListOfFileServlet extends HttpServlet {
         String directoryPath = req.getParameter("path");
         if (directoryPath == null || directoryPath.equals("D:\\filemanager")) {
             directoryPath = "D:\\filemanager\\"+ login;
+        }
+        if(!directoryPath.startsWith("D:\\filemanager\\" + login)){
+            directoryPath = "D:\\filemanager\\" + login;
         }
         File folder = new File(directoryPath);
         File[] files = folder.listFiles(File::isFile);
