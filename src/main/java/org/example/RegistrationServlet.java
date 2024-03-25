@@ -34,24 +34,23 @@ public class RegistrationServlet extends HttpServlet {
         String email = req.getParameter("email");
 
         UserProfile userProfile = new UserProfile(login, password, email);
-        //AccountService.addNewUser(userProfile);
         try {
             if(UsersDAO.getUserByLogin(login) == null){
                 UsersDAO.addUser(userProfile);
+                File directory = new File("D:/filemanager/"+login);
+                if (!directory.mkdir()) {
+                    resp.setContentType("text/html;charset=utf-8");
+                    resp.getWriter().println("<script>alert('Ошибка создания профиля');</script>");
+                    return;
+                }
+                resp.sendRedirect("/sign-up");
+            }
+            else{
+                resp.setContentType("text/html;charset=utf-8");
+                resp.getWriter().println("<script>alert('Пользователь с таким именем уже существует, придумайте другое');</script>");
             }
         } catch (ClassNotFoundException | SQLException e) {
             throw new RuntimeException(e);
         }
-        //String session = req.getSession().getId();
-        //AccountService.addNewSession(session, userProfile);
-        File directory = new File("D:/filemanager/"+login);
-        if (!directory.mkdir()) {
-            resp.setContentType("text/html;charset=utf-8");
-            resp.getWriter().println("<h1 style='color: red;'>" +
-                    "Ошибка создания профиля, возможно, пользователь с таким логином уже существует," +
-                    " <a href='javascript:history.go(-1)'>назад </a></h1>");
-            return;
-        }
-        resp.sendRedirect("/sign-up");
     }
 }

@@ -40,7 +40,7 @@ public class UsersDAO {
         }
     }
     public static UserProfile getUserByLogin(String login) throws SQLException, ClassNotFoundException {
-        getConnection();
+        checkConnection();
         Executor executor = new Executor(connection);
         String query = "SELECT * FROM users WHERE login = '" + login + "'";
         return executor.execQuery(query, resultSet -> {
