@@ -2,6 +2,7 @@ package org.example;
 
 import accounts.AccountService;
 import accounts.UserProfile;
+import dbservice.UsersDAO;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
+
 @WebServlet("/registration")
 public class RegistrationServlet extends HttpServlet {
 
@@ -31,9 +34,16 @@ public class RegistrationServlet extends HttpServlet {
         String email = req.getParameter("email");
 
         UserProfile userProfile = new UserProfile(login, password, email);
-        AccountService.addNewUser(userProfile);
-        String session = req.getSession().getId();
-        AccountService.addNewSession(session, userProfile);
+        //AccountService.addNewUser(userProfile);
+        try {
+            if(UsersDAO.getUserByLogin(login) == null){
+                UsersDAO.addUser(userProfile);
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+            throw new RuntimeException(e);
+        }
+        //String session = req.getSession().getId();
+        //AccountService.addNewSession(session, userProfile);
         File directory = new File("D:/filemanager/"+login);
         if (!directory.mkdir()) {
             resp.setContentType("text/html;charset=utf-8");

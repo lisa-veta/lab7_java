@@ -8,8 +8,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Objects;
 import accounts.AccountService;
+import dbservice.UsersDAO;
 
 @WebServlet("/sign-up")
 public class SignUpServlet extends HttpServlet {
@@ -28,12 +30,17 @@ public class SignUpServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String login = req.getParameter("login");
         String password = req.getParameter("password");
-        UserProfile userProfile = AccountService.getUserByLogin(login);
+        //UserProfile userProfile = AccountService.getUserByLogin(login);
 
         String session = req.getSession().getId();
-        AccountService.addNewSession(session, userProfile);
-
-        if(userProfile != null && Objects.equals(userProfile.getPass(), password)){
+        //AccountService.addNewSession(session, userProfile);
+        UserProfile user = null;
+        try {
+            user = UsersDAO.getUserByLogin(login);
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        if (user != null && user.getPass().equals(password)) {
             req.getSession().setAttribute("login", login);
             req.getSession().setAttribute("password", password);
             resp.sendRedirect("list-files?path=D:/filemanager/"+login);
