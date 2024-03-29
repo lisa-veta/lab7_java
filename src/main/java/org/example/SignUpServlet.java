@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
-import dbservice.UsersDAO;
+import dbservice.DBService;
 
 @WebServlet("/sign-up")
 public class SignUpServlet extends HttpServlet {
@@ -26,15 +26,16 @@ public class SignUpServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setCharacterEncoding("UTF-8");
+        resp.setCharacterEncoding("UTF-8");
         String login = req.getParameter("login");
         String password = req.getParameter("password");
         UserProfile user;
         try {
-            user = UsersDAO.getUserByLogin(login);
+            user = DBService.getUserByLogin(login);
             if (user != null && user.getPass().equals(password)) {
                 req.getSession().setAttribute("login", login);
-                //req.getSession().setAttribute("password", password);
-                resp.sendRedirect("list-files?path=D:/filemanager/"+login);
+                resp.sendRedirect("list-files?path=D:/filemanager/"+user.getLogin());
             }
             else{
                 resp.setContentType("text/html;charset=utf-8");

@@ -1,8 +1,7 @@
 package org.example;
 
-import accounts.AccountService;
 import accounts.UserProfile;
-import dbservice.UsersDAO;
+import dbservice.DBService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -18,6 +17,7 @@ public class RegistrationServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setCharacterEncoding("UTF-8");
         String login = (String)req.getSession().getAttribute("login");
         String password = (String)req.getSession().getAttribute("password");
         if (login != null && password != null) {
@@ -29,14 +29,15 @@ public class RegistrationServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setCharacterEncoding("UTF-8");
         String login = req.getParameter("login");
         String password = req.getParameter("password");
         String email = req.getParameter("email");
 
         UserProfile userProfile = new UserProfile(login, password, email);
         try {
-            if(UsersDAO.getUserByLogin(login) == null){
-                UsersDAO.addUser(userProfile);
+            if(DBService.getUserByLogin(login) == null){
+                DBService.addUser(userProfile);
                 File directory = new File("D:/filemanager/"+login);
                 if (!directory.mkdir()) {
                     resp.setContentType("text/html;charset=utf-8");
@@ -50,7 +51,8 @@ public class RegistrationServlet extends HttpServlet {
                 resp.getWriter().println("<script>alert('Пользователь с таким именем уже существует, придумайте другое');</script>");
             }
         } catch (ClassNotFoundException | SQLException e) {
-            throw new RuntimeException(e);
+            resp.setContentType("text/html;charset=utf-8");
+            resp.getWriter().println("<script>alert('Ошибка');</script>");
         }
     }
 }

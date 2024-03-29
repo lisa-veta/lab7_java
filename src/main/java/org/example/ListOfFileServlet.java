@@ -17,6 +17,7 @@ public class ListOfFileServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setCharacterEncoding("UTF-8");
         String login = (String)req.getSession().getAttribute("login");
         //String password = (String)req.getSession().getAttribute("password");
         if (login == null) {
@@ -47,6 +48,7 @@ public class ListOfFileServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setCharacterEncoding("UTF-8");
         req.getSession().removeAttribute("login");
         //req.getSession().removeAttribute("password");
         resp.sendRedirect("/sign-up");
