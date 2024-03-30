@@ -26,5 +26,4 @@ public class Executor {
         stmt.close();
         return value;
     }
-
 }

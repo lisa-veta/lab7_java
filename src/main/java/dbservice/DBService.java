@@ -1,7 +1,6 @@
 package dbservice;
 
 import accounts.UserProfile;
-import dbservice.UsersDAO;
 import java.sql.*;
 
 public class DBService {

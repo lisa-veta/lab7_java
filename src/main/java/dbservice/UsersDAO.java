@@ -1,18 +1,17 @@
 package dbservice;
 
 import accounts.UserProfile;
-import dbservice.DBService;
-import dbservice.Executor;
 
-import java.sql.Connection;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class UsersDAO {
 
     private Executor executor;
+    Connection connection;
 
     public UsersDAO(Connection connection) {
         this.executor = new Executor(connection);
+        this.connection = connection;
     }
 
     public UserProfile get(String login) throws SQLException {
