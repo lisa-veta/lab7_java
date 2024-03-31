@@ -31,18 +31,14 @@ public class SignUpServlet extends HttpServlet {
         String login = req.getParameter("login");
         String password = req.getParameter("password");
         UserProfile user;
-        try {
-            user = DBService.getUserByLogin(login);
-            if (user != null && user.getPass().equals(password)) {
-                req.getSession().setAttribute("login", login);
-                resp.sendRedirect("list-files?path=D:/filemanager/"+user.getLogin());
-            }
-            else{
-                resp.setContentType("text/html;charset=utf-8");
-                resp.getWriter().println("<script>alert('Неверный логин или пароль');</script>");
-            }
-        } catch (SQLException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
+        user = DBService.getUserByLogin(login);
+        if (user != null && user.getPass().equals(password)) {
+            req.getSession().setAttribute("login", login);
+            resp.sendRedirect("list-files?path=D:/filemanager/"+user.getLogin());
+        }
+        else{
+            resp.setContentType("text/html;charset=utf-8");
+            resp.getWriter().println("<script>alert('Неверный логин или пароль');</script>");
         }
     }
 }

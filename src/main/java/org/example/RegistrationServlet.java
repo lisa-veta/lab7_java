@@ -35,24 +35,19 @@ public class RegistrationServlet extends HttpServlet {
         String email = req.getParameter("email");
 
         UserProfile userProfile = new UserProfile(login, password, email);
-        try {
-            if(DBService.getUserByLogin(login) == null){
-                DBService.addUser(userProfile);
-                File directory = new File("D:/filemanager/"+login);
-                if (!directory.mkdir()) {
-                    resp.setContentType("text/html;charset=utf-8");
-                    resp.getWriter().println("<script>alert('Ошибка создания профиля');</script>");
-                    return;
-                }
-                resp.sendRedirect("/sign-up");
-            }
-            else{
+        if(DBService.getUserByLogin(login) == null){
+            DBService.addUser(userProfile);
+            File directory = new File("D:/filemanager/"+login);
+            if (!directory.mkdir()) {
                 resp.setContentType("text/html;charset=utf-8");
-                resp.getWriter().println("<script>alert('Пользователь с таким именем уже существует, придумайте другое');</script>");
+                resp.getWriter().println("<script>alert('Ошибка создания профиля');</script>");
+                return;
             }
-        } catch (ClassNotFoundException | SQLException e) {
+            resp.sendRedirect("/sign-up");
+        }
+        else{
             resp.setContentType("text/html;charset=utf-8");
-            resp.getWriter().println("<script>alert('Ошибка');</script>");
+            resp.getWriter().println("<script>alert('Пользователь с таким именем уже существует, придумайте другое');</script>");
         }
     }
 }
